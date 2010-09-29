@@ -423,7 +423,7 @@ It is only when a map isn't loaded that Director may introduce noticeable
 amounts of latency. There are a few ways to mitigate this;
 - Use local maps; they are loaded at startup and therefore always available.
 - Set always_wait to off; this will cause Director to return the request-URI
-  as-is immediately if it doesn't have the map loaded.
+as-is immediately if it doesn't have the map loaded.
 - Set Cache-Control: max-age as high as you can tolerate, to reduce the
   frequency of map reloads.
 
