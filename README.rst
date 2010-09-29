@@ -4,8 +4,9 @@ Squid Director
 Copyright (c) 2008-2010 Yahoo! Inc.
 See src/director.py for license.
 
- Overview
----------
+
+Overview
+~~~~~~~~
 
 **Director** is a `Squid <http://www.squid-cache.org/>`_ add-on
 that allows you to easily:
@@ -38,8 +39,9 @@ loaded from the origin server site itself, in a well-known location
 Local maps have precedence over remote ones; if a local map is
 present, the remote map for that origin server will be ignored.
 
- Using Director
----------------
+
+Using Director
+~~~~~~~~~~~~~~
 
 Director requires that you have:
 - a recent Squid-2 installation <http://www.squid-cache.org>
@@ -79,7 +81,7 @@ you; if you're using it in an accelerator, try a local map with a
 
 
 Director Configuration Settings
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **log\_level**
     How much detail to log. One of ( ``DEBUG``, ``INFO``, ``WARNING``,
@@ -103,8 +105,8 @@ Note that if you change any of these settings after starting
 Squid, you must **restart** it (not just reconfigure).
 
 
- Writing Maps
--------------
+Writing Maps
+~~~~~~~~~~~~
 
 Maps are simple XML files (i.e., they don't even use namespaces).
 The root element is ``map``. If the map file is local (i.e., loaded
@@ -148,15 +150,15 @@ trailing '/' isn't significant; the innermost ``path`` will match
 ``/scripts/old/prototype.js/`` as well.
 
 
- Map Directives
-~~~~~~~~~~~~~~~
+Map Directives
+--------------
 
 **Map directives** indicate what processing Director should apply
 to URIs that match that path. Currently, the following directives
 are supported;
 
- authority
-^^^^^^^^^^
+authority
+^^^^^^^^^
 
 Matching URIs will have their authority (i.e., hostname and port)
 rewritten to the specified values. MUST have a ``host`` attribute,
@@ -180,8 +182,8 @@ accelerator origin servers as cache_peers. If you do this, you
 MUST set ``remote_map_lookup`` to ``off``, so that the accelerator
 can't be used as a proxy.
 
- rewrite
-^^^^^^^^
+rewrite
+^^^^^^^
 
 Matching URIs will have the segment this directive occurs in
 replaced with the specified value. MUST have a ``path`` attribute;
@@ -204,8 +206,8 @@ will rewrite the URIs:
 -  ``http://example.com/images/foo/bar.jpg`` to
    ``http://example.com/pix/foo/bar.jpg``
 
- query
-^^^^^^
+query
+^^^^^
 
 Matching URIs will have their query arguments rewritten and
 canonicalised as directed. This includes the following attributes:
@@ -264,15 +266,14 @@ will only apply the innermost ``path`` to
 ``/http://example.com:80/images`` (etc.).
 
 
- Frequently Asked Questions
----------------------------
+Frequently Asked Questions
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
- Using Director
-~~~~~~~~~~~~~~~
+Using Director
+--------------
 
-
- Why should I put maps on my origin servers?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Why should I put maps on my origin servers?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 There are two reasons;
 
@@ -284,8 +285,8 @@ There are two reasons;
    your servers.
 
 
- What will happen when the map isn't loaded? Will users get errors?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+What will happen when the map isn't loaded? Will users get errors?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If a local map is present, it will always be loaded, so this isn't
 a concern. However, if you're using remote maps, the first request
@@ -309,8 +310,8 @@ However, if you're using Director for canonicalisation or other
 more forgiving transformations, try using remote maps, and consider
 turning ``always_wait`` off.
 
- How do I test my maps with Director?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+How do I test my maps with Director?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Director has a command-line test mode; use it like this::
 
@@ -321,8 +322,8 @@ respond with the rewritten URI. When doing this, you can see what's
 happening in the log. Try setting ``log_level=DEBUG`` (reloading Ssquid
 afterwards) if you want more information.
 
- How often are maps refreshed?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+How often are maps refreshed?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Local maps will be re-checked every
 ``local_map_check`` seconds.
@@ -334,8 +335,8 @@ or if it's too low, it will be checked every 60 seconds.
 In both cases, maps will also be refreshed each time Squid is
 reloaded or restarted.
 
- How does Director handle errors?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+How does Director handle errors?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 There are a variety of errors that may happen in the process of
 handling URIs from Squid, as well as working with maps.
@@ -350,12 +351,11 @@ in the near future, and then regurgitate the request-URI.
 
 In both cases, the problem will be noted in Director's log.
 
+About Director
+--------------
 
- About Director
-~~~~~~~~~~~~~~~
-
- Director doesn't do what I need. Can I get something added to it?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Director doesn't do what I need. Can I get something added to it?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Probably. We're very open to feature requests and new
 functionality, provided that they don't affect overall performance.
@@ -376,8 +376,8 @@ Features that may be coming up (feedback appreciated!) include:
 Additionally, there are a number of things we can do to improve its
 performance and manageability.
 
- How does Director work?
-^^^^^^^^^^^^^^^^^^^^^^^^
+How does Director work?
+^^^^^^^^^^^^^^^^^^^^^^^
 
 Director is a Squid "helper process"; when squid starts, it
 launches an instance of the helper and communicates with it on
@@ -385,8 +385,8 @@ STDIN and STDOUT. It's written in Python using the Twisted
 event-driven framework.
 
 
- How much overhead does Director add to a Squid box?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+How much overhead does Director add to a Squid box?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Director does use some CPU; in pathological circumstances, it may
 even use nearly as much CPU as Squid itself. However, since most
@@ -408,8 +408,8 @@ Director shouldn't use noticable amounts of memory unless you have
 a **very** large number of maps in active use.
 
 
- How much latency does Director add to requests?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+How much latency does Director add to requests?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Popular URLs are cached in Director, to provide the fastest
 possible service. In these cases, much less than a millisecond of
