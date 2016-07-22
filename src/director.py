@@ -97,6 +97,10 @@ def main(configfile, test=False):
     
     # logging
     logger = logging.getLogger()
+    #set root-logger
+    if logger.getEffectiveLevel()>0:
+        logger.setLevel('NOTSET')
+
     formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
     if not test:
         try:
